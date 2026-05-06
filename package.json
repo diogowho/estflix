@@ -1,0 +1,13 @@
+{
+  "name": "estflix",
+  "version": "0.0.1",
+  "author": {
+    "name": "Diogo Castro",
+    "email": "2024121780@estudantes.ips.pt",
+    "url": "https://diogocastro.net"
+  },
+  "license": "The Unlicense",
+  "repository": "github:diogowho/estflix",
+  "dependencies": {},
+  "devDependencies": {}
+}
