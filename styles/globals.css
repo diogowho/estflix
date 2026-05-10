@@ -556,6 +556,33 @@ ul {
 	z-index: 2;
 }
 
+/* admin table category pill */
+.category-pill {
+	font-size: 0.72rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	padding: 4px 10px;
+	border-radius: 20px;
+	background: var(--surface-high);
+	border: 1px solid var(--border-strong);
+	white-space: nowrap;
+	display: inline-block;
+}
+
+/* admin table rating badge */
+.rating-badge {
+	font-size: 0.72rem;
+	font-weight: 700;
+	padding: 4px 10px;
+	border-radius: 20px;
+	color: var(--rating);
+	background: var(--surface-high);
+	border: 1px solid var(--border-strong);
+	white-space: nowrap;
+	display: inline-block;
+}
+
 /* buttons */
 .btn {
 	display: inline-flex;

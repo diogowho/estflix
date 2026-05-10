@@ -248,7 +248,13 @@ class AdminPage {
 			const catPill = document.createElement('span');
 			catPill.classList.add('category-pill');
 			catPill.textContent = category ? category.name : 'Unknown';
-			if (category?.color) catPill.style.backgroundColor = category.color;
+			if (category?.color) {
+				catPill.style.backgroundColor = category.color;
+				// Set contrasting text color based on background brightness
+				const bgColor = category.color;
+				const luminance = this._getLuminance(bgColor);
+				catPill.style.color = luminance > 0.5 ? '#000' : '#fff';
+			}
 			tdCategory.appendChild(catPill);
 
 			const tdYear = document.createElement('td');
@@ -984,5 +990,23 @@ class AdminPage {
 		group.appendChild(label);
 		group.appendChild(input);
 		return group;
+	}
+
+	// calculate relative luminance of a hex color
+	// returns value between 0 (darkest) and 1 (lightest)
+	_getLuminance(hexColor) {
+		// convert hex to RGB
+		const r = parseInt(hexColor.slice(1, 3), 16) / 255;
+		const g = parseInt(hexColor.slice(3, 5), 16) / 255;
+		const b = parseInt(hexColor.slice(5, 7), 16) / 255;
+
+		// apply gamma correction
+		const a = [r, g, b].map((v) => {
+			return v <= 0.03928
+				? v / 12.92
+				: Math.pow((v + 0.055) / 1.055, 2.4);
+		});
+
+		return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
 	}
 }
