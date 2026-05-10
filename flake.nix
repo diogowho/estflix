@@ -15,13 +15,14 @@
         );
     in
     {
-      packages = forAllSystems (pkgs: {
-        estflix = pkgs.callPackage ./default.nix { };
-        default = self.packages.${pkgs.stdenv.hostPlatform.system}.estflix;
-      });
-
       devShells = forAllSystems (pkgs: {
-        default = pkgs.callPackage ./shell.nix { };
+        default = pkgs.mkShellNoCC {
+          packages = with pkgs; [
+            nodejs
+            prettierd
+            vtsls
+          ];
+        };
       });
     };
 }
