@@ -46,6 +46,20 @@ class HomePage {
 
 		// handle if the user clicks a link with a hash (e.g. #favorites)
 		window.addEventListener('hashchange', () => this._applyHashScroll());
+
+		// also handle same-hash links being clicked
+		document.addEventListener('click', (e) => {
+			const link = e.target.closest('a[href*="#"]');
+			if (link && link.href.includes('#')) {
+				const hash = link.href.split('#')[1];
+				if (hash) {
+					// force hash change to trigger scroll
+					e.preventDefault();
+					window.location.hash = '';
+					window.location.hash = hash;
+				}
+			}
+		});
 	}
 
 	_draw() {
