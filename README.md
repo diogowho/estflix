@@ -1,27 +1,28 @@
 # ESTFlix
 
 ## 1. Introdução
+
 No âmbito da unidade curricular de Programação Web, propõe-se o desenvolvimento de uma aplicação web denominada ESTFlix, inspirada em plataformas modernas de streaming de conteúdos multimédia.
 
 O principal objetivo deste projeto é permitir aos alunos aplicar, de forma integrada, conhecimentos fundamentais de desenvolvimento web, incluindo:
 
-* Programação orientada a objetos em JavaScript
-* Manipulação do DOM
-* Persistência de dados no cliente e servidor
-* Desenvolvimento de APIs REST
-* Integração com bases de dados relacionais
+- Programação orientada a objetos em JavaScript
+- Manipulação do DOM
+- Persistência de dados no cliente e servidor
+- Desenvolvimento de APIs REST
+- Integração com bases de dados relacionais
 
 A aplicação deverá permitir aos utilizadores explorar conteúdos (filmes ou séries), organizados por categorias, bem como interagir com esses conteúdos através de favoritos, histórico e recomendações personalizadas.
 
 Nem toda a aplicação deve ser estilo “Netflix visual”. Há uma distinção importante:
 
-* Interface de consumo (tipo streaming) → cartões, imagens, UI visual
-* Interface de gestão (tipo backoffice/admin) → tabelas com CRUD
+- Interface de consumo (tipo streaming) → cartões, imagens, UI visual
+- Interface de gestão (tipo backoffice/admin) → tabelas com CRUD
 
 O projeto será desenvolvido em duas fases:
 
-* **Fase 1**: Aplicação exclusivamente do lado do cliente
-* **Fase 2**: Introdução de servidor, base de dados e autenticação
+- **Fase 1**: Aplicação exclusivamente do lado do cliente
+- **Fase 2**: Introdução de servidor, base de dados e autenticação
 
 ## 2. Fase 1 – Aplicação Cliente (Frontend)
 
@@ -37,57 +38,57 @@ A interface deverá simular uma plataforma de streaming moderna, com foco na usa
 
 A aplicação deverá incluir:
 
-* Página principal com conteúdos em destaque
-* Listagens de conteúdos organizadas por categorias
-* Cartões com imagem, título e classificação
-* Navegação clara entre diferentes secções
-* Administração das entidades em formato de tabela
+- Página principal com conteúdos em destaque
+- Listagens de conteúdos organizadas por categorias
+- Cartões com imagem, título e classificação
+- Navegação clara entre diferentes secções
+- Administração das entidades em formato de tabela
 
 ### 2.3. Gestão de Conteúdos
 
 Cada conteúdo deverá incluir:
 
-* Identificador (Id)
-* Título
-* Descrição
-* Género
-* Ano de lançamento
-* Classificação
-* Imagem (URL)
+- Identificador (Id)
+- Título
+- Descrição
+- Género
+- Ano de lançamento
+- Classificação
+- Imagem (URL)
 
 Funcionalidades:
 
-* Criar, editar, remover e listar conteúdos
-* Filtrar por categoria
+- Criar, editar, remover e listar conteúdos
+- Filtrar por categoria
 
 Regras:
 
-* Não podem existir conteúdos com o mesmo título
-* O Id deve ser gerado automaticamente
+- Não podem existir conteúdos com o mesmo título
+- O Id deve ser gerado automaticamente
 
 ### 2.4. Gestão de Categorias
 
 Cada categoria deverá possuir:
 
-* Id
-* Nome
+- Id
+- Nome
 
 Funcionalidades:
 
-* Criar, editar, remover e listar categorias
+- Criar, editar, remover e listar categorias
 
 Regras:
 
-* Nome único
-* Não pode apagar categorias com conteúdos associados
+- Nome único
+- Não pode apagar categorias com conteúdos associados
 
 ### 2.5. Perfis de Utilizador
 
 Cada perfil deverá permitir:
 
-* Favoritos
-* Histórico
-* Seleção de perfil ativo
+- Favoritos
+- Histórico
+- Seleção de perfil ativo
 
 ### 2.6. Área de Administração
 
@@ -95,16 +96,16 @@ A aplicação deverá incluir tabelas para gestão de dados com operações CRUD
 
 **Exemplo:**
 
-| Id | Título | Género | Ano | Classificação | Ações |
-|----|--------|--------|-----|---------------|-------|
-| 1  | Inception | Sci-Fi | 2010 | 4.8       | Editar Apagar |
-| 2  | Joker | Drama | 2019 | 4.5 | Editar Apagar|
+| Id  | Título    | Género | Ano  | Classificação | Ações         |
+| --- | --------- | ------ | ---- | ------------- | ------------- |
+| 1   | Inception | Sci-Fi | 2010 | 4.8           | Editar Apagar |
+| 2   | Joker     | Drama  | 2019 | 4.5           | Editar Apagar |
 
 ### 2.7. Requisitos Técnicos
 
-* Utilização de HTML, CSS e JavaScript (sem recorrer a frameworks como React, Angular, etc)
-* Programação orientada a objetos
-* Utilização de localStorage para persistência dos dados
+- Utilização de HTML, CSS e JavaScript (sem recorrer a frameworks como React, Angular, etc)
+- Programação orientada a objetos
+- Utilização de localStorage para persistência dos dados
 
 ### 2.8. Sugestões de Desenvolvimento
 
@@ -115,9 +116,10 @@ Os grupos devem tomar as melhores decisões (devidamente fundamentadas) sobre as
 Caso se detete alguma inconsistência ou impossibilidade de implementação, poder-se-á reajustar algum dos objetivos do projeto, sendo o mesmo indicado pelo corpo docente atempadamente. Tal situação será excecional e nunca irá prejudicar a avaliação dos alunos.
 
 Comece por criar um web site com três tipos de ficheiros:
-* *.html (páginas HTML)
-* styles.css (ficheiro com os estilos a aplicar)
-* *.js (um ou mais ficheiros em JavaScript que implementarãoo as funcionalidades do projeto). São estes os ficheiros que deverão enviar como entrega do projeto (se quiser poderá dividir o JavaScript por diferentes ficheiros para implementar as diversas classes)
+
+- \*.html (páginas HTML)
+- styles.css (ficheiro com os estilos a aplicar)
+- \*.js (um ou mais ficheiros em JavaScript que implementarãoo as funcionalidades do projeto). São estes os ficheiros que deverão enviar como entrega do projeto (se quiser poderá dividir o JavaScript por diferentes ficheiros para implementar as diversas classes)
 
 Tal como foi descrito, o JavaScript deverá implementar a funcionalidade do projeto (camadas de dados e de negócio), enquanto o HTML+CSS servirão apenas para a apresentação da informação (camada de apresentação).
 
@@ -161,16 +163,16 @@ A aplicação deverá incluir sistema de autenticação com login e registo.
 
 Cada utilizador deverá:
 
-* Ter conta própria
-* Gerir os seus perfis
-* Ter dados associados a cada perfil (favoritos, histórico)
+- Ter conta própria
+- Gerir os seus perfis
+- Ter dados associados a cada perfil (favoritos, histórico)
 
 ### 3.5. Personalização
 
 A aplicação deverá apresentar recomendações simples com base em:
 
-* Histórico de visualização
-* Géneros/contéudos preferidos
+- Histórico de visualização
+- Géneros/contéudos preferidos
 
 ### 3.6. Integração com Fase 1
 
@@ -180,13 +182,13 @@ A maioria das interfaces do sistema foram realizadas na primeira fase do projeto
 
 Deverá entregar os seguintes manuais (apenas na fase 2):
 
-* Manual Técnico: O Manual Técnico representa um importante auxílio (principalmente) para os técnicos que não participaram no desenvolvimento do projeto, proporcionando uma descrição técnica das diversas especificidades que suportaram as decisões e o desenvolvimento do software. Um dos principais objetivos deste manual é munir os técnicos que precisarão de conhecer o que foi desenvolvido, a compreender as especificidades técnicas que orientaram a implementação e as decisões tomadas, de forma a que consigam eles próprios prosseguir com o desenvolvimento ou corrigir algum aspeto que tenha ficado menos bem. As secções base de um Manual Técnico são:
+- Manual Técnico: O Manual Técnico representa um importante auxílio (principalmente) para os técnicos que não participaram no desenvolvimento do projeto, proporcionando uma descrição técnica das diversas especificidades que suportaram as decisões e o desenvolvimento do software. Um dos principais objetivos deste manual é munir os técnicos que precisarão de conhecer o que foi desenvolvido, a compreender as especificidades técnicas que orientaram a implementação e as decisões tomadas, de forma a que consigam eles próprios prosseguir com o desenvolvimento ou corrigir algum aspeto que tenha ficado menos bem. As secções base de um Manual Técnico são:
     1. Capa – identificação da UC, do projeto e do(s) aluno(s)
     2. Arquitetura do sistema – identificação dos módulos, seus objetivos individuais, suas conexões e como se relacionam – que informação circula dentro de cada módulo e entre módulos
     3. Entidades e sua implementação – poderá recorrer-se à identificação e descrição das várias entidades e da API que as manipula
     4. Descrição das opções tomadas – descrever as opções de implementação que foram tomadas em detrimento de outras, por vezes essas opções podem não ser as mais óbvias e como tal devem ser documentadas
     5. Limitações técnicas e ideias para desenvolvimento futuro – requisitos não implementados – refactoring que se percebe ser necessário fazer no futuro mas que não houve tempo para fazer.
-* Manual de Utilizador: O Manual de Utilizador é de mais fácil compreensão do que representa, uma vez que os encontramos em diversos objetos que se compra, seja um electrodoméstico, um carro ou um software. Este manual serve como um guião para proporcionar ao utilizador uma descrição do que fazer em diversas situações. No caso do software o mais comum é descrever todas as Funcionalidades existentes. As secções base de um Manual de Utilizador são: 1. Capa – identificação da UC, do projeto e do(s) aluno(s)
+- Manual de Utilizador: O Manual de Utilizador é de mais fácil compreensão do que representa, uma vez que os encontramos em diversos objetos que se compra, seja um electrodoméstico, um carro ou um software. Este manual serve como um guião para proporcionar ao utilizador uma descrição do que fazer em diversas situações. No caso do software o mais comum é descrever todas as Funcionalidades existentes. As secções base de um Manual de Utilizador são: 1. Capa – identificação da UC, do projeto e do(s) aluno(s)
     1. Introdução – Para quem é , para que serve? Que problemas resolve? – Descrever de forma geral os requisitos que o programa satisfaz
     2. Instalação e utilização – Descrever como instalar e configurar o programa, para que este fique pronto a ser usado – Descrever quais os comandos necessários para usar o programa ou scripts a executar (base de dados por exemplo).
     3. Exemplo de utilização – Recorrendo a prints das páginas deverá explicar-se a linha de sucesso, ou seja: o funcionamento típico, e algumas linhas de insucesso, ou seja: possíveis comportamentos de exceção, erros, etc. Se preferir esta secção pode ser demonstrada através de um vídeo.
