@@ -635,6 +635,73 @@ ul {
 	justify-content: center;
 }
 
+/* login page */
+.login-screen,
+.login-page {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 2rem;
+}
+
+.login-card {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: 20px;
+	padding: 2.5rem;
+	max-width: 400px;
+	width: 100%;
+	text-align: center;
+	box-shadow: var(--shadow-tight);
+}
+
+.login-logo {
+	font-weight: 900;
+	font-size: 2rem;
+	color: var(--text);
+	margin-bottom: 2rem;
+	font-family: 'Merriweather', serif;
+}
+.login-logo span {
+	color: var(--accent);
+}
+
+.login-title {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: var(--text);
+	margin-bottom: 1.5rem;
+}
+
+.login-form {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+	text-align: left;
+}
+
+.login-form .form-group {
+	text-align: left;
+}
+
+.login-footer {
+	margin-top: 1.5rem;
+	padding-top: 1.5rem;
+	border-top: 1px solid var(--border);
+}
+
+.login-footer a {
+	color: var(--text-2);
+	font-size: 0.9rem;
+}
+
+.login-footer a:hover {
+	color: var(--text);
+	text-decoration: underline;
+}
+
 /* profiles page */
 .profiles-screen,
 .profiles-page {

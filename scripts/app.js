@@ -14,9 +14,27 @@
 		navbar.setAttribute('profile-avatar', profile.avatar);
 	}
 
+	const loginRoot = document.getElementById('login-root');
 	const profilesRoot = document.getElementById('profiles-root');
 	const homeRoot = document.getElementById('home-root');
 	const adminRoot = document.getElementById('admin-root');
+
+	const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+	if (loginRoot && profilesRoot) {
+		if (!isLoggedIn) {
+			const loginPage = new LoginPage();
+			loginPage.render(loginRoot);
+			loginRoot.style.display = 'block';
+			profilesRoot.style.display = 'none';
+		} else {
+			loginRoot.style.display = 'none';
+			profilesRoot.style.display = 'block';
+			const page = new ProfilesPage(profileService);
+			page.render(profilesRoot);
+		}
+		return;
+	}
 
 	if (profilesRoot) {
 		const page = new ProfilesPage(profileService);
