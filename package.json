@@ -9,9 +9,21 @@
 	"license": "The Unlicense",
 	"repository": "github:diogowho/estflix",
 	"scripts": {
+		"start": "node server.js",
+		"dev": "node --watch server.js",
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
 		"prettier": "^3.8.3"
+	},
+	"dependencies": {
+		"bcrypt": "^6.0.0",
+		"cors": "^2.8.6",
+		"dotenv": "^17.4.2",
+		"express": "^5.2.1",
+		"express-session": "^1.19.0",
+		"mysql2": "^3.22.4",
+		"passport": "^0.7.0",
+		"passport-local": "^1.0.0"
 	}
 }

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>ESTFlix</title>
+		<link rel="stylesheet" href="/styles/globals.css" />
+	</head>
+	<body>
+		<div class="void-bg"></div>
+
+		<estflix-navbar active-page="home"></estflix-navbar>
+
+		<main id="home-root"></main>
+
+		<estflix-toast></estflix-toast>
+
+		<!-- Services (base) -->
+		<script src="/scripts/services/StorageService.js"></script>
+		<script src="/scripts/services/ApiService.js"></script>
+		<script src="/scripts/services/AuthService.js"></script>
+		<!-- Models -->
+		<script src="/scripts/models/Content.js"></script>
+		<script src="/scripts/models/Category.js"></script>
+		<script src="/scripts/models/Profile.js"></script>
+		<!-- Services -->
+		<script src="/scripts/services/ContentService.js"></script>
+		<script src="/scripts/services/CategoryService.js"></script>
+		<script src="/scripts/services/ProfileService.js"></script>
+		<!-- Components -->
+		<script src="/scripts/components/EstflixToast.js"></script>
+		<script src="/scripts/components/EstflixModal.js"></script>
+		<script src="/scripts/components/EstflixCard.js"></script>
+		<script src="/scripts/components/EstflixNavbar.js"></script>
+		<script src="/scripts/components/EstflixHero.js"></script>
+		<!-- Pages -->
+		<script src="/scripts/pages/HomePage.js"></script>
+		<!-- App -->
+		<script src="/scripts/app.js"></script>
+	</body>
+</html>
