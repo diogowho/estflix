@@ -97,6 +97,16 @@ class Profile {
 	}
 
 	/**
+	 * Removes a content ID from the profile's history list.
+	 * @param {number|string} contentId - The ID of the content to remove.
+	 * @returns {void}
+	 */
+	removeFromHistory(contentId) {
+		const id = Number(contentId);
+		this.history = this.history.filter((h) => h !== id);
+	}
+
+	/**
 	 * Validates that the profile has a non-empty name.
 	 * @throws {Error} If the name is blank or missing.
 	 * @returns {void}

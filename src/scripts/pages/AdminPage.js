@@ -504,12 +504,34 @@ class AdminPage {
 			return null;
 		}
 
+		const year = yearRaw ? parseInt(yearRaw, 10) : null;
+		const rating = ratingRaw ? parseFloat(ratingRaw) : null;
+		const YEAR_MIN = 1900;
+		const YEAR_MAX = new Date().getFullYear() + 1;
+		if (
+			year !== null &&
+			(Number.isNaN(year) || year < YEAR_MIN || year > YEAR_MAX)
+		) {
+			EstflixToast.show(
+				`Year must be between ${YEAR_MIN} and ${YEAR_MAX}.`,
+				'error',
+			);
+			return null;
+		}
+		if (
+			rating !== null &&
+			(Number.isNaN(rating) || rating < 0 || rating > 5)
+		) {
+			EstflixToast.show('Rating must be between 0 and 5.', 'error');
+			return null;
+		}
+
 		return {
 			title,
 			description,
 			categoryId,
-			year: yearRaw ? parseInt(yearRaw, 10) : null,
-			rating: ratingRaw ? parseFloat(ratingRaw) : null,
+			year,
+			rating,
 			imageUrl,
 		};
 	}
@@ -822,6 +844,7 @@ class AdminPage {
 		}
 
 		const profiles = await this._profileService.getAll();
+		const activeProfile = await this._profileService.getActive();
 
 		if (profiles.length === 0) {
 			target.appendChild(
@@ -874,9 +897,18 @@ class AdminPage {
 			const deleteBtn = document.createElement('button');
 			deleteBtn.classList.add('btn', 'btn-danger', 'btn-sm');
 			deleteBtn.textContent = 'Delete';
-			deleteBtn.addEventListener('click', () =>
-				this._confirmDeleteProfile(profile),
-			);
+			// Disable deleting the currently active profile
+			if (activeProfile && profile.id === activeProfile.id) {
+				deleteBtn.disabled = true;
+				deleteBtn.setAttribute('aria-disabled', 'true');
+				const msg = "You can't delete the current user";
+				deleteBtn.title = msg; // fallback for user agents that still show title on disabled elements
+				tdActions.setAttribute('data-tooltip', msg); // styled tooltip on the cell
+			} else {
+				deleteBtn.addEventListener('click', () =>
+					this._confirmDeleteProfile(profile),
+				);
+			}
 			tdActions.appendChild(deleteBtn);
 
 			tr.appendChild(tdAvatar);
@@ -945,6 +977,15 @@ class AdminPage {
 			onConfirm: async () => {
 				this._modal.setLoading(true);
 				try {
+					const active = await this._profileService.getActive();
+					if (active && active.id === profile.id) {
+						EstflixToast.show(
+							'Cannot delete the active profile',
+							'error',
+						);
+						this._modal.setLoading(false);
+						return;
+					}
 					await this._profileService.delete(profile.id);
 					this._modal.close();
 					EstflixToast.show(

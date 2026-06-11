@@ -158,6 +158,20 @@ class ProfileService {
 	}
 
 	/**
+	 * Removes a content item from a profile's watch history.
+	 *
+	 * @param {number} profileId - The identifier of the profile.
+	 * @param {number} contentId - The identifier of the content item to remove.
+	 * @returns {Promise<void>}
+	 * @throws {Error} When the request fails.
+	 */
+	async removeFromHistory(profileId, contentId) {
+		await ApiService.delete(
+			`/api/profiles/${profileId}/history/${contentId}`,
+		);
+	}
+
+	/**
 	 * Retrieves personalised content recommendations for a profile.
 	 *
 	 * @param {number} profileId - The identifier of the profile.

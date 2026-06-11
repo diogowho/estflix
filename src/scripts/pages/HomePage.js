@@ -40,7 +40,7 @@ class HomePage {
 		});
 
 		document.addEventListener('hero-watch', (e) => {
-			this._handleCardClick(e.detail.contentId);
+			this._handleHeroWatch(e.detail.contentId);
 		});
 
 		document.addEventListener('hero-info', (e) => {
@@ -332,6 +332,20 @@ class HomePage {
 			}
 		}
 
+		this._showContentDetail(content);
+	}
+
+	async _handleHeroWatch(contentId) {
+		// Try to get content from cache first
+		let content = this._allContent.find((c) => c.id == contentId);
+		if (!content) {
+			try {
+				content = await this._contentService.getById(contentId);
+			} catch {
+				return;
+			}
+		}
+
 		if (this._activeProfile) {
 			try {
 				await this._profileService.addToHistory(
@@ -339,12 +353,13 @@ class HomePage {
 					contentId,
 				);
 				this._activeProfile.addToHistory(Number(contentId));
+				this._updateHistoryRow();
 			} catch {
-				// Silently handle history update errors
+				// Ignore history errors
 			}
 		}
 
-		this._showContentDetail(content);
+		EstflixToast.show(`Now playing: ${content.title}`, 'success');
 	}
 
 	async _handleFavoriteToggle(contentId) {
@@ -413,6 +428,37 @@ class HomePage {
 					} else {
 						this._draw();
 					}
+				}
+			}
+		} else if (existingRow) {
+			existingRow.remove();
+		}
+	}
+
+	_updateHistoryRow() {
+		const history = this._activeProfile?.history ?? [];
+		const historyContent = history
+			.map((id) => this._allContent.find((c) => c.id == id))
+			.filter(Boolean);
+
+		const existingRow = this._container.querySelector(
+			'[data-row-id="history"]',
+		);
+
+		if (historyContent.length > 0) {
+			const newRow = this._buildRow(
+				'Continue Watching',
+				historyContent,
+				'history',
+			);
+			if (existingRow) {
+				existingRow.replaceWith(newRow);
+			} else {
+				const heroEl = this._container.querySelector('estflix-hero');
+				if (heroEl) {
+					heroEl.after(newRow);
+				} else {
+					this._draw();
 				}
 			}
 		} else if (existingRow) {
@@ -491,7 +537,19 @@ class HomePage {
 		const watchBtn = document.createElement('button');
 		watchBtn.classList.add('btn', 'btn-primary');
 		watchBtn.textContent = '\u25B6 Watch Now';
-		watchBtn.addEventListener('click', () => {
+		watchBtn.addEventListener('click', async () => {
+			if (this._activeProfile) {
+				try {
+					await this._profileService.addToHistory(
+						this._activeProfile.id,
+						content.id,
+					);
+					this._activeProfile.addToHistory(Number(content.id));
+					this._updateHistoryRow();
+				} catch {
+					// Silently handle history update errors
+				}
+			}
 			EstflixToast.show(`Now playing: ${content.title}`, 'success');
 			overlay.remove();
 		});
@@ -510,6 +568,31 @@ class HomePage {
 		closeDetailBtn.classList.add('btn', 'btn-ghost');
 		closeDetailBtn.textContent = 'Close';
 		closeDetailBtn.addEventListener('click', () => overlay.remove());
+
+		// If this content is in the active profile's history, allow removing it
+		if (
+			this._activeProfile &&
+			this._activeProfile.history.includes(content.id)
+		) {
+			const removeHistBtn = document.createElement('button');
+			removeHistBtn.classList.add('btn', 'btn-ghost');
+			removeHistBtn.textContent = 'Remove from Continue Watching';
+			removeHistBtn.addEventListener('click', async () => {
+				try {
+					await this._profileService.removeFromHistory(
+						this._activeProfile.id,
+						content.id,
+					);
+					this._activeProfile.removeFromHistory(Number(content.id));
+					this._updateHistoryRow();
+					EstflixToast.show('Removed from Continue Watching', 'info');
+					overlay.remove();
+				} catch {
+					EstflixToast.show('Error updating history', 'error');
+				}
+			});
+			actions.appendChild(removeHistBtn);
+		}
 
 		actions.appendChild(watchBtn);
 		actions.appendChild(favBtn);

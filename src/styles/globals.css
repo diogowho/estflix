@@ -891,6 +891,67 @@ ul {
 	background: var(--surface-high);
 }
 
+/* Disabled action button visual and styled tooltip for admin actions */
+.data-table .actions .btn[disabled],
+.data-table .actions .btn[aria-disabled='true'] {
+	/* make the danger button look subdued */
+	background: rgba(232, 68, 58, 0.08);
+	color: var(--text-3);
+	cursor: not-allowed;
+	box-shadow: none;
+	transform: none;
+	opacity: 0.72;
+	border: 1px solid rgba(255, 255, 255, 0.03);
+}
+.data-table .actions .btn[disabled]:hover,
+.data-table .actions .btn[aria-disabled='true']:hover {
+	transform: none;
+	background: rgba(232, 68, 58, 0.08);
+}
+
+/* Styled tooltip shown on the actions cell (so it works even when the button is disabled) */
+.data-table .actions[data-tooltip] {
+	position: relative;
+}
+.data-table .actions[data-tooltip]::after {
+	content: attr(data-tooltip);
+	position: absolute;
+	bottom: calc(100% + 10px);
+	left: 50%;
+	transform: translateX(-50%);
+	background: var(--surface-high);
+	color: var(--text-2);
+	border: 1px solid var(--border);
+	padding: 8px 10px;
+	border-radius: 10px;
+	white-space: nowrap;
+	font-size: 0.85rem;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 120ms ease-in-out;
+	box-shadow: var(--shadow-tight);
+	z-index: 20;
+}
+.data-table .actions[data-tooltip]:hover::after {
+	opacity: 1;
+}
+.data-table .actions[data-tooltip]::before {
+	content: '';
+	position: absolute;
+	bottom: calc(100% + 4px);
+	left: 50%;
+	transform: translateX(-50%);
+	border-width: 6px;
+	border-style: solid;
+	border-color: var(--surface-high) transparent transparent transparent;
+	opacity: 0;
+	transition: opacity 120ms ease-in-out;
+	z-index: 21;
+}
+.data-table .actions[data-tooltip]:hover::before {
+	opacity: 1;
+}
+
 .empty-state {
 	text-align: center;
 	padding: 3.5rem 2rem;
