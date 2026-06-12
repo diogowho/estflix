@@ -512,7 +512,7 @@ router.delete('/:id/history/:contentId', async (req, res) => {
 /**
  * GET /api/profiles/:id/recommendations
  *
- * Generates up to 10 personalised content recommendations for a profile.
+ * Generates up to 6 personalised content recommendations for a profile.
  *
  * The algorithm:
  * 1. Identifies the top 3 categories from the combined watch history and
@@ -600,7 +600,7 @@ router.get('/:id/recommendations', async (req, res) => {
 					: '';
 
 			[rows] = await pool.query(
-				`${CONTENT_WITH_CATEGORY} ${excludeClause} ORDER BY c.rating DESC LIMIT 10`,
+				`${CONTENT_WITH_CATEGORY} ${excludeClause} ORDER BY c.rating DESC LIMIT 6`,
 				excludeIds,
 			);
 			recommendations = rows;
@@ -617,10 +617,10 @@ router.get('/:id/recommendations', async (req, res) => {
 
 			[rows] = await pool.query(
 				`${CONTENT_WITH_CATEGORY}
-                 WHERE c.category_id IN (${categoryPlaceholders})
-                 ${excludePlaceholders}
-                 ORDER BY c.rating DESC
-                 LIMIT 10`,
+                  WHERE c.category_id IN (${categoryPlaceholders})
+                  ${excludePlaceholders}
+                  ORDER BY c.rating DESC
+                  LIMIT 6`,
 				[...topCategoryIds, ...excludeIds],
 			);
 			recommendations = rows;
@@ -632,17 +632,17 @@ router.get('/:id/recommendations', async (req, res) => {
 		if (!recommendations || recommendations.length === 0) {
 			if (excludeIds.length > 0) {
 				const excludeClause = `WHERE c.id NOT IN (${excludeIds.map(() => '?').join(',')})`;
-				const [randRows] = await pool.query(
-					`${CONTENT_WITH_CATEGORY} ${excludeClause} ORDER BY RAND() LIMIT 10`,
-					excludeIds,
-				);
+			const [randRows] = await pool.query(
+				`${CONTENT_WITH_CATEGORY} ${excludeClause} ORDER BY RAND() LIMIT 6`,
+				excludeIds,
+			);
 				if (randRows && randRows.length > 0) {
 					return res.json(randRows);
 				}
 			}
 
 			const [finalRows] = await pool.query(
-				`${CONTENT_WITH_CATEGORY} ORDER BY RAND() LIMIT 10`,
+				`${CONTENT_WITH_CATEGORY} ORDER BY RAND() LIMIT 6`,
 			);
 			return res.json(finalRows);
 		}
