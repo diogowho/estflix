@@ -469,6 +469,7 @@ class AdminPage {
 		const imageInput = document.createElement('input');
 		imageInput.setAttribute('type', 'text');
 		imageInput.setAttribute('id', 'form-content-image');
+		imageInput.setAttribute('required', 'true');
 		imageInput.setAttribute(
 			'placeholder',
 			'https://picsum.photos/seed/SEED/300/450',
@@ -500,7 +501,7 @@ class AdminPage {
 			.getElementById('form-content-image')
 			.value.trim();
 
-		if (!title || !description || !categoryId) {
+		if (!title || !description || !categoryId || !imageUrl) {
 			EstflixToast.show('Please fill in all required fields.', 'error');
 			return null;
 		}
