@@ -19,26 +19,36 @@ const pool = require('./database');
  * @throws {Error} Propagates unexpected database errors via `done(err)`.
  */
 passport.use(
-    new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
-        try {
-            const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+	new LocalStrategy(
+		{ usernameField: 'email' },
+		async (email, password, done) => {
+			try {
+				const [rows] = await pool.query(
+					'SELECT * FROM users WHERE email = ?',
+					[email],
+				);
 
-            if (rows.length === 0) {
-                return done(null, false, { message: 'Invalid email or password' });
-            }
+				if (rows.length === 0) {
+					return done(null, false, {
+						message: 'Invalid email or password',
+					});
+				}
 
-            const user = rows[0];
-            const match = await bcrypt.compare(password, user.password);
+				const user = rows[0];
+				const match = await bcrypt.compare(password, user.password);
 
-            if (!match) {
-                return done(null, false, { message: 'Invalid email or password' });
-            }
+				if (!match) {
+					return done(null, false, {
+						message: 'Invalid email or password',
+					});
+				}
 
-            return done(null, user);
-        } catch (err) {
-            return done(err);
-        }
-    })
+				return done(null, user);
+			} catch (err) {
+				return done(err);
+			}
+		},
+	),
 );
 
 /**
@@ -51,7 +61,7 @@ passport.use(
  * @param {function(Error|null, number=): void} done - Passport session callback.
  */
 passport.serializeUser((user, done) => {
-    done(null, user.id);
+	done(null, user.id);
 });
 
 /**
@@ -69,18 +79,18 @@ passport.serializeUser((user, done) => {
  * @throws {Error} Propagates unexpected database errors via `done(err)`.
  */
 passport.deserializeUser(async (id, done) => {
-    try {
-        const [rows] = await pool.query(
-            'SELECT id, email, created_at FROM users WHERE id = ?',
-            [id]
-        );
+	try {
+		const [rows] = await pool.query(
+			'SELECT id, email, created_at FROM users WHERE id = ?',
+			[id],
+		);
 
-        if (rows.length === 0) {
-            return done(null, false);
-        }
+		if (rows.length === 0) {
+			return done(null, false);
+		}
 
-        done(null, rows[0]);
-    } catch (err) {
-        done(err);
-    }
+		done(null, rows[0]);
+	} catch (err) {
+		done(err);
+	}
 });

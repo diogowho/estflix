@@ -23,7 +23,10 @@ class AuthService {
 	 * @throws {Error} When credentials are invalid or the request fails.
 	 */
 	static async login(email, password) {
-		const data = await ApiService.post('/api/auth/login', { email, password });
+		const data = await ApiService.post('/api/auth/login', {
+			email,
+			password,
+		});
 		return data.user;
 	}
 
@@ -36,7 +39,10 @@ class AuthService {
 	 * @throws {Error} When the email is already in use or the request fails.
 	 */
 	static async register(email, password) {
-		const data = await ApiService.post('/api/auth/register', { email, password });
+		const data = await ApiService.post('/api/auth/register', {
+			email,
+			password,
+		});
 		return data.user;
 	}
 

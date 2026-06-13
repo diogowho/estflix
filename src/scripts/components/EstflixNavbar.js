@@ -69,7 +69,10 @@ class EstflixNavbar extends HTMLElement {
 
 		hamburgerBtn.addEventListener('click', (e) => {
 			const isOpen = menuWrapper.classList.toggle('open');
-			hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+			hamburgerBtn.setAttribute(
+				'aria-expanded',
+				isOpen ? 'true' : 'false',
+			);
 			// Stop event propagation so the outside click handler doesn't close the menu immediately
 			e.stopPropagation();
 		});
@@ -185,7 +188,10 @@ class EstflixNavbar extends HTMLElement {
 
 		// Close menu when user clicks outside
 		this._outsideClickHandler = (e) => {
-			if (!container.contains(e.target) && menuWrapper.classList.contains('open')) {
+			if (
+				!container.contains(e.target) &&
+				menuWrapper.classList.contains('open')
+			) {
 				menuWrapper.classList.remove('open');
 				hamburgerBtn.setAttribute('aria-expanded', 'false');
 			}

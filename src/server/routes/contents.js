@@ -124,11 +124,9 @@ router.post('/', async (req, res) => {
 		req.body;
 
 	if (!title || !category_id || year === undefined || rating === undefined) {
-		return res
-			.status(400)
-			.json({
-				message: 'title, category_id, year, and rating are required',
-			});
+		return res.status(400).json({
+			message: 'title, category_id, year, and rating are required',
+		});
 	}
 
 	const yearNum = Number(year);
@@ -139,11 +137,9 @@ router.post('/', async (req, res) => {
 		yearNum < YEAR_MIN ||
 		yearNum > YEAR_MAX
 	) {
-		return res
-			.status(400)
-			.json({
-				message: `year must be an integer between ${YEAR_MIN} and ${YEAR_MAX}`,
-			});
+		return res.status(400).json({
+			message: `year must be an integer between ${YEAR_MIN} and ${YEAR_MAX}`,
+		});
 	}
 
 	if (
@@ -151,11 +147,9 @@ router.post('/', async (req, res) => {
 		ratingNum < RATING_MIN ||
 		ratingNum > RATING_MAX
 	) {
-		return res
-			.status(400)
-			.json({
-				message: `rating must be a number between ${RATING_MIN} and ${RATING_MAX}`,
-			});
+		return res.status(400).json({
+			message: `rating must be a number between ${RATING_MIN} and ${RATING_MAX}`,
+		});
 	}
 
 	try {
@@ -230,11 +224,9 @@ router.put('/:id', async (req, res) => {
 				yearNum < YEAR_MIN ||
 				yearNum > YEAR_MAX
 			) {
-				return res
-					.status(400)
-					.json({
-						message: `year must be an integer between ${YEAR_MIN} and ${YEAR_MAX}`,
-					});
+				return res.status(400).json({
+					message: `year must be an integer between ${YEAR_MIN} and ${YEAR_MAX}`,
+				});
 			}
 			updatedYear = yearNum;
 		}
@@ -246,11 +238,9 @@ router.put('/:id', async (req, res) => {
 				ratingNum < RATING_MIN ||
 				ratingNum > RATING_MAX
 			) {
-				return res
-					.status(400)
-					.json({
-						message: `rating must be a number between ${RATING_MIN} and ${RATING_MAX}`,
-					});
+				return res.status(400).json({
+					message: `rating must be a number between ${RATING_MIN} and ${RATING_MAX}`,
+				});
 			}
 			updatedRating = ratingNum;
 		}

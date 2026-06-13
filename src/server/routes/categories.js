@@ -17,13 +17,15 @@ router.use(requireAuth);
  * @throws {Error} Responds with `500` on unexpected database errors.
  */
 router.get('/', async (req, res) => {
-    try {
-        const [rows] = await pool.query('SELECT * FROM categories ORDER BY name ASC');
-        return res.json(rows);
-    } catch (err) {
-        console.error('Get categories error:', err);
-        return res.status(500).json({ message: 'Internal server error' });
-    }
+	try {
+		const [rows] = await pool.query(
+			'SELECT * FROM categories ORDER BY name ASC',
+		);
+		return res.json(rows);
+	} catch (err) {
+		console.error('Get categories error:', err);
+		return res.status(500).json({ message: 'Internal server error' });
+	}
 });
 
 /**
@@ -38,18 +40,21 @@ router.get('/', async (req, res) => {
  * @throws {Error} Responds with `500` on unexpected database errors.
  */
 router.get('/:id', async (req, res) => {
-    try {
-        const [rows] = await pool.query('SELECT * FROM categories WHERE id = ?', [req.params.id]);
+	try {
+		const [rows] = await pool.query(
+			'SELECT * FROM categories WHERE id = ?',
+			[req.params.id],
+		);
 
-        if (rows.length === 0) {
-            return res.status(404).json({ message: 'Category not found' });
-        }
+		if (rows.length === 0) {
+			return res.status(404).json({ message: 'Category not found' });
+		}
 
-        return res.json(rows[0]);
-    } catch (err) {
-        console.error('Get category error:', err);
-        return res.status(500).json({ message: 'Internal server error' });
-    }
+		return res.json(rows[0]);
+	} catch (err) {
+		console.error('Get category error:', err);
+		return res.status(500).json({ message: 'Internal server error' });
+	}
 });
 
 /**
@@ -65,30 +70,33 @@ router.get('/:id', async (req, res) => {
  * @throws {Error} Responds with `500` on unexpected database errors.
  */
 router.post('/', async (req, res) => {
-    const { name, color } = req.body;
+	const { name, color } = req.body;
 
-    if (!name) {
-        return res.status(400).json({ message: 'Name is required' });
-    }
+	if (!name) {
+		return res.status(400).json({ message: 'Name is required' });
+	}
 
-    try {
-        const [result] = await pool.query(
-            'INSERT INTO categories (name, color) VALUES (?, ?)',
-            [name, color || '#e50914']
-        );
+	try {
+		const [result] = await pool.query(
+			'INSERT INTO categories (name, color) VALUES (?, ?)',
+			[name, color || '#e50914'],
+		);
 
-        const [rows] = await pool.query('SELECT * FROM categories WHERE id = ?', [
-            result.insertId,
-        ]);
+		const [rows] = await pool.query(
+			'SELECT * FROM categories WHERE id = ?',
+			[result.insertId],
+		);
 
-        return res.status(201).json(rows[0]);
-    } catch (err) {
-        if (err.code === 'ER_DUP_ENTRY') {
-            return res.status(409).json({ message: 'Category name already exists' });
-        }
-        console.error('Create category error:', err);
-        return res.status(500).json({ message: 'Internal server error' });
-    }
+		return res.status(201).json(rows[0]);
+	} catch (err) {
+		if (err.code === 'ER_DUP_ENTRY') {
+			return res
+				.status(409)
+				.json({ message: 'Category name already exists' });
+		}
+		console.error('Create category error:', err);
+		return res.status(500).json({ message: 'Internal server error' });
+	}
 });
 
 /**
@@ -106,36 +114,41 @@ router.post('/', async (req, res) => {
  * @throws {Error} Responds with `500` on unexpected database errors.
  */
 router.put('/:id', async (req, res) => {
-    const { name, color } = req.body;
+	const { name, color } = req.body;
 
-    try {
-        const [existing] = await pool.query('SELECT * FROM categories WHERE id = ?', [
-            req.params.id,
-        ]);
+	try {
+		const [existing] = await pool.query(
+			'SELECT * FROM categories WHERE id = ?',
+			[req.params.id],
+		);
 
-        if (existing.length === 0) {
-            return res.status(404).json({ message: 'Category not found' });
-        }
+		if (existing.length === 0) {
+			return res.status(404).json({ message: 'Category not found' });
+		}
 
-        const updatedName = name !== undefined ? name : existing[0].name;
-        const updatedColor = color !== undefined ? color : existing[0].color;
+		const updatedName = name !== undefined ? name : existing[0].name;
+		const updatedColor = color !== undefined ? color : existing[0].color;
 
-        await pool.query('UPDATE categories SET name = ?, color = ? WHERE id = ?', [
-            updatedName,
-            updatedColor,
-            req.params.id,
-        ]);
+		await pool.query(
+			'UPDATE categories SET name = ?, color = ? WHERE id = ?',
+			[updatedName, updatedColor, req.params.id],
+		);
 
-        const [rows] = await pool.query('SELECT * FROM categories WHERE id = ?', [req.params.id]);
+		const [rows] = await pool.query(
+			'SELECT * FROM categories WHERE id = ?',
+			[req.params.id],
+		);
 
-        return res.json(rows[0]);
-    } catch (err) {
-        if (err.code === 'ER_DUP_ENTRY') {
-            return res.status(409).json({ message: 'Category name already exists' });
-        }
-        console.error('Update category error:', err);
-        return res.status(500).json({ message: 'Internal server error' });
-    }
+		return res.json(rows[0]);
+	} catch (err) {
+		if (err.code === 'ER_DUP_ENTRY') {
+			return res
+				.status(409)
+				.json({ message: 'Category name already exists' });
+		}
+		console.error('Update category error:', err);
+		return res.status(500).json({ message: 'Internal server error' });
+	}
 });
 
 /**
@@ -152,33 +165,38 @@ router.put('/:id', async (req, res) => {
  * @throws {Error} Responds with `500` on unexpected database errors.
  */
 router.delete('/:id', async (req, res) => {
-    try {
-        const [existing] = await pool.query('SELECT * FROM categories WHERE id = ?', [
-            req.params.id,
-        ]);
+	try {
+		const [existing] = await pool.query(
+			'SELECT * FROM categories WHERE id = ?',
+			[req.params.id],
+		);
 
-        if (existing.length === 0) {
-            return res.status(404).json({ message: 'Category not found' });
-        }
+		if (existing.length === 0) {
+			return res.status(404).json({ message: 'Category not found' });
+		}
 
-        const [contents] = await pool.query(
-            'SELECT id FROM contents WHERE category_id = ? LIMIT 1',
-            [req.params.id]
-        );
+		const [contents] = await pool.query(
+			'SELECT id FROM contents WHERE category_id = ? LIMIT 1',
+			[req.params.id],
+		);
 
-        if (contents.length > 0) {
-            return res
-                .status(409)
-                .json({ message: 'Cannot delete category with associated contents' });
-        }
+		if (contents.length > 0) {
+			return res
+				.status(409)
+				.json({
+					message: 'Cannot delete category with associated contents',
+				});
+		}
 
-        await pool.query('DELETE FROM categories WHERE id = ?', [req.params.id]);
+		await pool.query('DELETE FROM categories WHERE id = ?', [
+			req.params.id,
+		]);
 
-        return res.json({ message: 'Deleted' });
-    } catch (err) {
-        console.error('Delete category error:', err);
-        return res.status(500).json({ message: 'Internal server error' });
-    }
+		return res.json({ message: 'Deleted' });
+	} catch (err) {
+		console.error('Delete category error:', err);
+		return res.status(500).json({ message: 'Internal server error' });
+	}
 });
 
 module.exports = router;

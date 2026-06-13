@@ -632,10 +632,10 @@ router.get('/:id/recommendations', async (req, res) => {
 		if (!recommendations || recommendations.length === 0) {
 			if (excludeIds.length > 0) {
 				const excludeClause = `WHERE c.id NOT IN (${excludeIds.map(() => '?').join(',')})`;
-			const [randRows] = await pool.query(
-				`${CONTENT_WITH_CATEGORY} ${excludeClause} ORDER BY RAND() LIMIT 6`,
-				excludeIds,
-			);
+				const [randRows] = await pool.query(
+					`${CONTENT_WITH_CATEGORY} ${excludeClause} ORDER BY RAND() LIMIT 6`,
+					excludeIds,
+				);
 				if (randRows && randRows.length > 0) {
 					return res.json(randRows);
 				}
