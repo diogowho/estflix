@@ -156,22 +156,14 @@ class EstflixNavbar extends HTMLElement {
 		profileDiv.appendChild(this._avatarEl);
 		profileDiv.appendChild(this._nameEl);
 
-		const logoutBtn = document.createElement('button');
-		logoutBtn.classList.add('btn', 'btn-ghost', 'btn-sm');
-		logoutBtn.setAttribute('aria-label', 'Logout');
-		logoutBtn.textContent = '\u2192 Logout';
-		logoutBtn.style.marginLeft = '0.5rem';
-		logoutBtn.addEventListener('click', async () => {
-			try {
-				await AuthService.logout();
-			} catch(err) {
-				console.error(err);
-			}
-			StorageService.remove('estflix_active_profile');
-			window.location.href = '/';
-		});
+		const logoutLink = document.createElement('a');
+		logoutLink.classList.add('btn', 'btn-ghost', 'btn-sm');
+		logoutLink.setAttribute('aria-label', 'Logout');
+		logoutLink.textContent = '\u2192 Logout';
+		logoutLink.style.marginLeft = '0.5rem';
+		logoutLink.href = '/api/auth/logout';
 
-		profileDiv.appendChild(logoutBtn);
+		profileDiv.appendChild(logoutLink);
 
 		profileDiv.addEventListener('click', () => {
 			this.dispatchEvent(

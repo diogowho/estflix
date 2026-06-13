@@ -20,8 +20,13 @@ app.use(
     session({
         secret: process.env.SESSION_SECRET || 'estflix-secret',
         resave: false,
-        saveUninitialized: false,
-        cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }, // 7 days
+        saveUninitialized: true,
+        cookie: {
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+            sameSite: 'lax',
+            secure: false,
+            httpOnly: true
+        }
     })
 );
 app.use(passport.initialize());

@@ -47,6 +47,6 @@ class AuthService {
 	 * @throws {Error} When the request fails.
 	 */
 	static async logout() {
-		return ApiService.post('/api/auth/logout', {});
+		return ApiService.get('/api/auth/logout');
 	}
 }

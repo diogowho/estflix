@@ -16,10 +16,10 @@ const router = express.Router();
  * @returns {void}
  */
 router.get('/me', (req, res) => {
-    if (!req.isAuthenticated()) {
-        return res.status(401).json({ message: 'Authentication required' });
-    }
-    return res.json({ user: req.user });
+	if (!req.isAuthenticated()) {
+		return res.status(401).json({ message: 'Authentication required' });
+	}
+	return res.json({ user: req.user });
 });
 
 /**
@@ -34,40 +34,44 @@ router.get('/me', (req, res) => {
  * @throws {Error} Passes unexpected errors to Express's default error handler.
  */
 router.post('/register', async (req, res) => {
-    const { email, password } = req.body;
+	const { email, password } = req.body;
 
-    if (!email || !password) {
-        return res.status(400).json({ message: 'Email and password are required' });
-    }
+	if (!email || !password) {
+		return res
+			.status(400)
+			.json({ message: 'Email and password are required' });
+	}
 
-    try {
-        const hashedPassword = await bcrypt.hash(password, 10);
+	try {
+		const hashedPassword = await bcrypt.hash(password, 10);
 
-        const [result] = await pool.query(
-            'INSERT INTO users (email, password) VALUES (?, ?)',
-            [email, hashedPassword]
-        );
+		const [result] = await pool.query(
+			'INSERT INTO users (email, password) VALUES (?, ?)',
+			[email, hashedPassword],
+		);
 
-        const [rows] = await pool.query(
-            'SELECT id, email, created_at FROM users WHERE id = ?',
-            [result.insertId]
-        );
+		const [rows] = await pool.query(
+			'SELECT id, email, created_at FROM users WHERE id = ?',
+			[result.insertId],
+		);
 
-        const newUser = rows[0];
+		const newUser = rows[0];
 
-        req.login(newUser, (err) => {
-            if (err) {
-                return res.status(500).json({ message: 'Login after register failed' });
-            }
-            return res.status(201).json({ user: newUser });
-        });
-    } catch (err) {
-        if (err.code === 'ER_DUP_ENTRY') {
-            return res.status(409).json({ message: 'Email already in use' });
-        }
-        console.error('Register error:', err);
-        return res.status(500).json({ message: 'Internal server error' });
-    }
+		req.login(newUser, (err) => {
+			if (err) {
+				return res
+					.status(500)
+					.json({ message: 'Login after register failed' });
+			}
+			return res.status(201).json({ user: newUser });
+		});
+	} catch (err) {
+		if (err.code === 'ER_DUP_ENTRY') {
+			return res.status(409).json({ message: 'Email already in use' });
+		}
+		console.error('Register error:', err);
+		return res.status(500).json({ message: 'Internal server error' });
+	}
 });
 
 /**
@@ -83,22 +87,24 @@ router.post('/register', async (req, res) => {
  * @returns {void}
  */
 router.post('/login', (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
-        if (err) {
-            return next(err);
-        }
-        if (!user) {
-            return res.status(401).json({ message: info?.message || 'Invalid credentials' });
-        }
-        req.login(user, (loginErr) => {
-            if (loginErr) {
-                return next(loginErr);
-            }
-            // Remove password from user object for security
-            const { password: _pw, ...safeUser } = user;
-            return res.json({ user: safeUser });
-        });
-    })(req, res, next);
+	passport.authenticate('local', (err, user, info) => {
+		if (err) {
+			return next(err);
+		}
+		if (!user) {
+			return res
+				.status(401)
+				.json({ message: info?.message || 'Invalid credentials' });
+		}
+		req.login(user, (loginErr) => {
+			if (loginErr) {
+				return next(loginErr);
+			}
+			// Remove password from user object for security
+			const { password: _pw, ...safeUser } = user;
+			return res.json({ user: safeUser });
+		});
+	})(req, res, next);
 });
 
 /**
@@ -111,19 +117,29 @@ router.post('/login', (req, res, next) => {
  * @param {import('express').NextFunction} next - Express next function, used to forward errors.
  * @returns {void}
  */
-router.post('/logout', (req, res, next) => {
-    req.logout((err) => {
-        if (err) {
-            return next(err);
-        }
-        req.session.destroy((err) => {
-            if (err) {
-                return next(err);
-            }
-            res.clearCookie('connect.sid', { path: '/' });
-            return res.json({ message: 'Logged out' });
-        });
-    });
+router.get('/logout', (req, res) => {
+	req.logout((err) => {
+		if (err) {
+			console.error('Passport logout error:', err);
+			return res.redirect('/');
+		}
+
+		req.session.destroy((err) => {
+			if (err) {
+				console.error('Session destroy error:', err);
+			}
+
+			// Expire the cookie immediately
+			res.cookie('connect.sid', '', {
+				expires: new Date(0),
+				path: '/',
+				sameSite: 'lax',
+				httpOnly: true,
+			});
+
+			res.redirect('/');
+		});
+	});
 });
 
 module.exports = router;
