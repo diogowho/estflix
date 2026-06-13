@@ -116,7 +116,13 @@ router.post('/logout', (req, res, next) => {
         if (err) {
             return next(err);
         }
-        return res.json({ message: 'Logged out' });
+        req.session.destroy((err) => {
+            if (err) {
+                return next(err);
+            }
+            res.clearCookie('connect.sid', { path: '/' });
+            return res.json({ message: 'Logged out' });
+        });
     });
 });
 
