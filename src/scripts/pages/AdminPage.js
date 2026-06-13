@@ -423,6 +423,7 @@ class AdminPage {
 		const descTextarea = document.createElement('textarea');
 		descTextarea.setAttribute('id', 'form-content-description');
 		descTextarea.setAttribute('required', 'true');
+		descTextarea.setAttribute('maxlength', '500');
 		descTextarea.classList.add('form-control');
 		if (content) descTextarea.textContent = content.description;
 
