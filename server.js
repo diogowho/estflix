@@ -54,10 +54,13 @@ app.get('/admin', (req, res) =>
 );
 
 const PORT = process.env.PORT || 3000;
-// Start listening on the specified port
-app.listen(PORT, () => {
+const server = app.listen(PORT);
+
+server.on('listening', () => {
 	console.log(`Server running at http://localhost:${PORT}`);
-}).on('error', (err) => {
+});
+
+server.on('error', (err) => {
 	if (err.code === 'EADDRINUSE') {
 		console.log(`Port ${PORT} is already in use.`);
 		process.exit(1);
