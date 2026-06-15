@@ -181,11 +181,9 @@ router.delete('/:id', async (req, res) => {
 		);
 
 		if (contents.length > 0) {
-			return res
-				.status(409)
-				.json({
-					message: 'Cannot delete category with associated contents',
-				});
+			return res.status(409).json({
+				message: 'Cannot delete category with associated contents',
+			});
 		}
 
 		await pool.query('DELETE FROM categories WHERE id = ?', [
